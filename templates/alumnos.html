@@ -28,7 +28,7 @@
             </div>
             <div class="mb-1">
                 <label id="lblNombreApellidoFA" for="txtNombreApellidoFA">Nombre y Apellido:</label>
-                <input type="text" name="txtNombreApellidoFA" id="txtNombreApellidoFA" class="form-control" required="true" minlength="10" maxlength="25">
+                <input type="text" name="txtNombreApellidoFA" id="txtNombreApellidoFA" class="form-control" required="true" minlength="10" maxlength="35">
             </div>
             <div class="text-end">
                 <button id="btnGuardarFA" name="btnGuardarFA" class="btn btn-dark">Guardar</button>
@@ -56,34 +56,48 @@
                 messages: {
                     txtMatriculaFA: {
                         required: "Ingresa la matrícula",
-                        minlength: "La matrícula es de 8 digitos",
-                        maxlength: "La matrícula es de 8 digitos",
+                        minlength: "La matrícula es de 8 dígitos",
+                        maxlength: "La matrícula es de 8 dígitos",
                         digits: "La matrícula es de solo números"
                     },
                     txtNombreApellidoFA: {
                         required: "Ingresa tu nombre y apellido",
-                        minlength: "Ingresa más o 10 caracteres",
-                        maxlength: "Ingresa menos o 25 caracteres"
+                        minlength: "Ingresa más de 10 caracteres",
+                        maxlength: "Ingresa menos de 35 caracteres"
                     }
                 },
                 rules: {
                     txtMatriculaFA: {
-                        // required: true,
-                        // minlength: 8,
-                        // maxlength: 8
-                        // digits: true
+                        required: true,
+                        minlength: 8,
+                        maxlength: 8,
+                        digits: true
+                    },
+                    txtNombreApellidoFA: {
+                        required: true,
+                        minlength: 10,
+                        maxlength: 35
                     }
                 }
-            })
+            });
 
             $("#frmAlumnos").submit(function (event) {
-                event.preventDefault()
+                event.preventDefault();
 
-                $.post("/alumnos/guardar", $(this).serialize(), function (respuesta) {
-                    console.log(respuesta)
-                })
-            })
-        })
-    </script>    
+                // Obtenemos los valores del formulario
+                var matricula = $("#txtMatriculaFA").val();
+                var nombreApellido = $("#txtNombreApellidoFA").val();
+
+                // Creamos una nueva fila con los datos del formulario
+                var nuevaFila = "<tr><td>" + matricula + "</td><td>" + nombreApellido + "</td></tr>";
+
+                // Añadimos la nueva fila a la tabla
+                $("#tbodyAlumnos").append(nuevaFila);
+
+                // Limpiamos el formulario
+                $(this)[0].reset();
+            });
+        });
+    </script>  
 </body>
 </html>
