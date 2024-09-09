@@ -81,18 +81,18 @@
                 }
             });
 
-            $("#frmAlumnos").submit(function (event) {
+            $("frmAlumnos").submit(function (event) {
                 event.preventDefault();
 
                 // Obtenemos los valores del formulario
-                var matricula = $("#txtMatriculaFA").val();
-                var nombreApellido = $("#txtNombreApellidoFA").val();
+                var matricula = $("txtMatriculaFA").val();
+                var nombreApellido = $("txtNombreApellidoFA").val();
 
                 // Creamos una nueva fila con los datos del formulario
                 var nuevaFila = "<tr><td>" + matricula + "</td><td>" + nombreApellido + "</td></tr>";
 
                 // Añadimos la nueva fila a la tabla
-                $("#tbodyAlumnos").append(nuevaFila);
+                $("tbodyAlumnos").append(nuevaFila);
 
                 // Limpiamos el formulario
                 $(this)[0].reset();
