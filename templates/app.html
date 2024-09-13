@@ -41,10 +41,10 @@
         // Evento: Acción de la aplicación
         channel.bind("evento", function (mensaje) {
             // alert("Ya ocurrió el evento en la aplicación")
-            $("#tbodyLog").append(`<tr>
-                <td>${mensaje["txtTemperatura"]}</td>
-                <td>${mensaje["txtHumedad"]}</td>
-                <td>${mensaje["dpFechaHora"]}</td>
+             $("#tbodyLog").append(`<tr>
+                <td>${mensaje["temperatura"]}</td>
+                <td>${mensaje["humedad"]}</td>
+                <td>${mensaje["fechahora"]}</td>
             </tr>`)
         })
     </script>
