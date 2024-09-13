@@ -21,8 +21,8 @@
     });
 
     var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
-      alert(JSON.stringify(data));
+    channel.bind('evento', function(mensaje) {
+      alert("a entrado alguien");
     });
   </script>
 <body>
