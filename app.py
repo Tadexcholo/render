@@ -49,14 +49,15 @@ def buscar():
     return registros
 
 @app.route("/evento", methods=["GET"])
+@app.route("/evento", methods=["GET"])
 def evento():
     if not con.is_connected():
         con.reconnect()
 
     cursor = con.cursor()
-
+    
     args = request.args
-    sql = "INSERT INTO tst0_cursos_pagos (Id_Curso_Pago, Telefono, Archivo) VALUES (%s, %s, %s)"
+    sql = "INSERT INTO tst0_cursos_pagos (Telefono, Archivo) VALUES (%s, %s)"
     val = (args["Telefono"], args["Archivo"])
     cursor.execute(sql, val)
     
