@@ -31,8 +31,8 @@ def alumnos():
 @app.route("/alumnos/guardar", methods=["POST"])
 def alumnosGuardar():
     con.close()
-    matricula      = request.form["txtMatriculaFA"]
-    nombreapellido = request.form["txtNombreApellidoFA"]
+    matricula      = request.form["txtTelefono"]
+    nombreapellido = request.form["txtTelefono"]
     return f"Matrícula: {matricula} Nombre y Apellido: {nombreapellido}"
 
 @app.route("/buscar")
