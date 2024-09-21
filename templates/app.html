@@ -14,11 +14,25 @@
 </head>
 <body>
     <div class="container">
+        <h2>Registrar Pago</h2>
+        <form id="frmPago">
+            <div class="mb-3">
+                <label for="txtTelefono" class="form-label">Teléfono:</label>
+                <input type="text" class="form-control" id="txtTelefono" required>
+            </div>
+            <div class="mb-3">
+                <label for="txtArchivo" class="form-label">Archivo:</label>
+                <input type="text" class="form-control" id="txtArchivo" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar Pago</button>
+        </form>
+
+        <h2>Registros de Pagos</h2>
         <table class="table table-sm">
             <thead>
                 <tr>
-                    <th>Numero del pago en curso</th>
-                    <th>Telefono</th>
+                    <th>Número del Pago en Curso</th>
+                    <th>Teléfono</th>
                     <th>Archivo</th>
                 </tr>
             </thead>
@@ -31,37 +45,45 @@
     <script>
         function buscar() {
             $.get("/buscar", function (respuesta) {
-                $("#tbodyLog").html("")
+                $("#tbodyLog").html("");
 
                 for (var x in respuesta) {
-                    var registro = respuesta[x]
-
+                    var registro = respuesta[x];
                     $("#tbodyLog").append(`<tr>
-                        <td>${id_Curso_Pago[1]}</td> 
-                        <td>${Telefono[2]}</td>
-                        <td>${Archivo[3]}</td>
-                    </tr>`)
+                        <td>${registro[0]}</td> 
+                        <td>${registro[1]}</td>
+                        <td>${registro[2]}</td>
+                    </tr>`);
                 }
-            })
+            });
         }
 
-        buscar()
+        buscar();
+
+        $("#frmPago").submit(function(event) {
+            event.preventDefault();
+            const telefono = $("#txtTelefono").val();
+            const archivo = $("#txtArchivo").val();
+
+            $.get(`/evento?Telefono=${telefono}&Archivo=${archivo}`, function(respuesta) {
+                console.log(respuesta);
+                buscar(); // Actualiza la tabla después de insertar
+            });
+        });
 
         // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true
+        Pusher.logToConsole = true;
         
         var pusher = new Pusher("cda1cc599395d699a2af", {
             cluster: "us2"
-        })
+        });
         
-        // Canal -> Conexion
         var channel = pusher.subscribe("conexion");
-        // Evento: Acción de la aplicación
-        channel.bind("evento", function (mensaje) {
-          
-            buscar()
-        })
+        channel.bind("evento", function(mensaje) {
+            buscar();
+        });
     </script>
 </body>
 </html>
+
            
