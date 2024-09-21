@@ -62,10 +62,10 @@
 
         $("#frmPago").submit(function(event) {
             event.preventDefault();
-            const telefono = $("txtTelefono").val();
-            const archivo = $("txtArchivo").val();
+            const Telefono = $("txtTelefono").val();
+            const Archivo = $("txtArchivo").val();
 
-            $.get(`/evento?Telefono=${telefono}&Archivo=${archivo}`, function(respuesta) {
+            $.get(`/evento?Telefono=${Telefono}&Archivo=${Archivo}`, function(respuesta) {
                 console.log(respuesta);
                 buscar(); // Actualiza la tabla después de insertar
             });
