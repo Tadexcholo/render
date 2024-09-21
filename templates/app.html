@@ -17,7 +17,7 @@
         <table class="table table-sm">
             <thead>
                 <tr>
-                    <th>id_Curso_Pago</th>
+                    <th>Numero del pago en curso</th>
                     <th>Telefono</th>
                     <th>Archivo</th>
                 </tr>
@@ -58,14 +58,7 @@
         var channel = pusher.subscribe("conexion");
         // Evento: Acción de la aplicación
         channel.bind("evento", function (mensaje) {
-            // alert("Ya ocurrió el evento en la aplicación")
-            /**
-            $("#tbodyLog").append(`<tr>
-                <td>${mensaje["temperatura"]}</td>
-                <td>${mensaje["humedad"]}</td>
-                <td>${mensaje["fechahora"]}</td>
-            </tr>`)
-            */
+          
             buscar()
         })
     </script>
