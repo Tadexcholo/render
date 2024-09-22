@@ -55,8 +55,8 @@ def registrar():
         con.reconnect()
     cursor = con.cursor()
     
-    sql = "INSERT INTO tst0_cursos_pagos (Telefono, Archivos) VALUES (%s, %s)"
-    val = (args["Telefono"], args["Archivos"])
+    sql = "INSERT INTO tst0_cursos_pagos (Telefono, Archivo) VALUES (%s, %s)"
+    val = (args["Telefono"], args["Archivo"])
     cursor.execute(sql, val)
 
     con.commit()
