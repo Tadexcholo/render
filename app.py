@@ -56,7 +56,7 @@ def registrar():
     cursor = con.cursor()
     
     sql = "INSERT INTO tst0_cursos_pagos (Telefono, Archivo) VALUES (%s, %s, %s)"
-    val = (args["Telefono"], args["Archivo"], datetime.datetime.now(pytz.timezone("America/Matamoros")))
+    val = (args["Telefono"], args["Archivo"])
     cursor.execute(sql, val)
 
     con.commit()
