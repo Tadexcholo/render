@@ -70,7 +70,7 @@ def buscar():
     if not con.is_connected():
         con.reconnect()
     cursor = con.cursor()
-    cursor.execute("SELECT * FROM tst0_cursos_pagos ORDER BY Id_Log DESC")
+    cursor.execute("SELECT * FROM tst0_cursos_pagos ORDER BY Id_Curso_Pago DESC")
     registros = cursor.fetchall()
 
     con.close()
