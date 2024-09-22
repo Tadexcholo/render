@@ -40,13 +40,13 @@ def alumnosGuardar():
 @app.route("/registrar", methods=["GET"])
 def registrar():
     args = request.args
-   pusher_client = pusher.Pusher(
-    app_id='1869080',
-    key='cdcefdd16aec9a6423e7',
-    secret='5d8e0749eed8b7b71f31',
-    cluster='us2',
-    ssl=True
-  )
+    pusher_client = pusher.Pusher(
+      app_id='1869080',
+      key='cdcefdd16aec9a6423e7',
+      secret='5d8e0749eed8b7b71f31',
+      cluster='us2',
+      ssl=True
+    )
 
     if not con.is_connected():
         con.reconnect()
