@@ -41,12 +41,12 @@
     <script>
         function buscar() {
             $.get("/buscar", function (respuesta) {
-                $("#tbodyLog").html("")
+                $("tbodyLog").html("")
 
                 for (var x in respuesta) {
                     var registro = respuesta[x]
 
-                    $("#tbodyLog").append(`<tr>
+                    $("tbodyLog").append(`<tr>
                         <td>${registro[0]}</td>
                         <td>${registro[1]}</td>
                         <td>${registro[2]}</td>
