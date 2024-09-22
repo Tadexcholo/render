@@ -41,43 +41,30 @@
     <script>
         function buscar() {
             $.get("/buscar", function (respuesta) {
-                $("#tbodyLog").html("");
+                $("#tbodyLog").html("")
 
                 for (var x in respuesta) {
-                    var registro = respuesta[x];
+                    var registro = respuesta[x]
+
                     $("#tbodyLog").append(`<tr>
-                        <td>${registro[0]}</td> 
                         <td>${registro[1]}</td>
                         <td>${registro[2]}</td>
-                    </tr>`);
+                        <td>${registro[3]}</td>
+                    </tr>`)
                 }
-            });
+            })
         }
 
-        buscar();
+        buscar()
 
-        $("#frmPago").submit(function(event) {
-            event.preventDefault();
-            const Telefono = $("Telefono").val(); // Corrección aquí
-            const Archivo = $("Archivo").val(); // Corrección aquí
-
-            $.get(`/registrar?Telefono=${Telefono}&Archivo=${Archivo}`, function(respuesta) {
-                console.log(respuesta);
-                buscar(); // Actualiza la tabla después de insertar
-            });
-        });
-
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
-        
         var pusher = new Pusher("cda1cc599395d699a2af", {
             cluster: "us2"
-        });
-        
-        var channel = pusher.subscribe("conexion");
-        channel.bind("evento", function(mensaje) {
-            buscar();
-        });
+        })
+
+        var channel = pusher.subscribe("registrosTiempoReal")
+        channel.bind("registroTiempoReal", function (mensaje) {
+            buscar()
+        })
     </script>
 </body>
 </html>
