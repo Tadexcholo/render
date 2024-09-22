@@ -12,26 +12,13 @@
 
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
+<body>
     <div class="container">
-        <h2>Registrar Pago</h2>
-        <form id="frmPago">
-            <div class="mb-3">
-                <label for="Telefono" class="form-label">Teléfono:</label>
-                <input type="text" class="form-control" id="Telefono" required>
-            </div>
-            <div class="mb-3">
-                <label for="Archivo" class="form-label">Archivo:</label>
-                <input type="text" class="form-control" id="Archivo" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Registrar Pago</button> <!-- Botón agregado -->
-        </form>
-
-        <h2>Registros de Pagos</h2>
         <table class="table table-sm">
             <thead>
                 <tr>
-                    <th>Número del Pago en Curso</th>
-                    <th>Teléfono</th>
+                    <th>Id Pago</th>
+                    <th>Telefono</th>
                     <th>Archivo</th>
                 </tr>
             </thead>
