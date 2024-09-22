@@ -1,11 +1,8 @@
 from flask import Flask
 from markupsafe import escape
-
 from flask import render_template
 from flask import request
-
 import pusher
-
 import mysql.connector
 import datetime
 import pytz
@@ -43,13 +40,13 @@ def alumnosGuardar():
 @app.route("/registrar", methods=["GET"])
 def registrar():
     args = request.args
-    pusher_client = pusher.Pusher(
-      app_id = "1767944",
-      key = "40e5ab6c83eddfbe7ada",
-      secret = "e2ab8dad87e2e0a84c6b",
-      cluster = "us2",
-      ssl=True
-    )
+   pusher_client = pusher.Pusher(
+    app_id='1869080',
+    key='cdcefdd16aec9a6423e7',
+    secret='5d8e0749eed8b7b71f31',
+    cluster='us2',
+    ssl=True
+  )
 
     if not con.is_connected():
         con.reconnect()
