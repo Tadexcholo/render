@@ -45,8 +45,8 @@ def registrar():
     args = request.args
     pusher_client = pusher.Pusher(
       app_id = "1767944",
-      key = "93408f3e56875b1bb947",
-      secret = "fd213855fc0b2521c437",
+      key = "40e5ab6c83eddfbe7ada",
+      secret = "e2ab8dad87e2e0a84c6b",
       cluster = "us2",
       ssl=True
     )
