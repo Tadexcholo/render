@@ -13,11 +13,11 @@
         <h2>Registrar Pago</h2>
         <form id="frmPago">
             <div class="mb-3">
-                <label for="txtTelefono" class="form-label">Teléfono:</label>
+                <label for="Telefono" class="form-label">Teléfono:</label>
                 <input type="text" class="form-control" id="txtTelefono" required>
             </div>
             <div class="mb-3">
-                <label for="txtArchivo" class="form-label">Archivo:</label>
+                <label for="Archivo" class="form-label">Archivo:</label>
                 <input type="text" class="form-control" id="txtArchivo" required>
             </div>
             <button type="submit" class="btn btn-primary">Registrar Pago</button> <!-- Botón agregado -->
@@ -58,10 +58,10 @@
 
         $("#frmPago").submit(function(event) {
             event.preventDefault();
-            const Telefono = $("#txtTelefono").val(); // Corrección aquí
-            const Archivo = $("#txtArchivo").val(); // Corrección aquí
+            const Telefono = $("Telefono").val(); // Corrección aquí
+            const Archivo = $("Archivo").val(); // Corrección aquí
 
-            $.get(`/registrar?Telefono=${Telefono}&Archivos=${Archivo}`, function(respuesta) {
+            $.get(`/registrar?Telefono=${Telefono}&Archivo=${Archivo}`, function(respuesta) {
                 console.log(respuesta);
                 buscar(); // Actualiza la tabla después de insertar
             });
