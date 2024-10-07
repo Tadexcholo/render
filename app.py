@@ -147,4 +147,4 @@ def eliminar():
 
     notificarActualizacionTemperaturaHumedad()
 
-    return make_response(jsonify({})
+    return make_response(jsonify({}))
