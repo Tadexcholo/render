@@ -73,3 +73,4 @@ def buscar():
     con.close()
 
     return registros
+  
