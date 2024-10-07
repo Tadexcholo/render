@@ -91,11 +91,11 @@ def guardar():
         Archivo     = %s
         WHERE Id_Curso_Pago = %s
         """
-        val = (temperatura, humedad, id)
+        val = (telefono, archivo, id)
     else:
         sql = """
         INSERT INTO tst0_cursos_pagos (Telefono, Archivo)
-                        VALUES (%s,          %s,      %s)
+                        VALUES (%s,          %s)
         """
         val =                  (Telefono, Archivo)
     
