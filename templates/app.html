@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="container">
-      <form id="frmTemperaturaHumedad" method="post">
+      <form id="frmTelefonoArchivo" method="post">
           <input type="hidden" id="id" name="id">
 
           <div class="mb-1">
@@ -38,7 +38,7 @@
             <th></th>
           </tr>
         </thead>
-        <tbody id="tbodyTemperaturaHumedad"></tbody>
+        <tbody id="tbodyTelefonoArchivo"></tbody>
       </table>
     </div>
 
@@ -117,12 +117,12 @@
                 $.get("/buscar", function (respuesta) {
                     $("#tbodyTemperaturaHumedad").html("")
 
-                        $("#tbodyTemperaturaHumedad").append(`<tr>
-                            <td>${temperaturaHumedad["Telefono"]}</td>
-                            <td>${temperaturaHumedad["Archivo"]}</td>
+                        $("#tbodyTelefonoArchivo").append(`<tr>
+                            <td>${telefonoarchivo["Telefono"]}</td>
+                            <td>${telefonoarchivo["Archivo"]}</td>
                             <td>
-                                <button class="btn btn-primary btn-editar" data-id="${temperaturaHumedad["Id_Curso_Pago"]}">Editar</button>
-                                <button class="btn btn-danger btn-eliminar" data-id="${temperaturaHumedad["Id_Curso_Pago"]}">Eliminar</button>
+                                <button class="btn btn-primary btn-editar" data-id="${telefonoarchivo["Id_Curso_Pago"]}">Editar</button>
+                                <button class="btn btn-danger btn-eliminar" data-id="${telefonoarchivo["Id_Curso_Pago"]}">Eliminar</button>
                             </td>
                         </tr>`)
                     }
@@ -139,11 +139,11 @@
                     var temperaturaHumedad = respuesta[0]
 
                     $("#id")
-                    .val(temperaturaHumedad["Id_Curso_Pago"])
+                    .val(telefonoarchivo["Id_Curso_Pago"])
                     .trigger("focus")
 
-                    $("#telefono ").val(temperaturaHumedad["Telefono"])
-                    $("#archivo").val(temperaturaHumedad["Archivo"])
+                    $("#telefono").val(telefonoarchivo["Telefono"])
+                    $("#archivo").val(telefonoarchivo["Archivo"])
                 })
             })
             
@@ -157,12 +157,12 @@
                 $.post("/eliminar", {id: id})
             })
 
-            $("#frmTemperaturaHumedad")
+            $("#frmTelefonoArchivo")
             .submit(function (event)  {
                 event.preventDefault()
 
                 $.post("/guardar", $(this).serialize(), function (respuesta) {
-                    $("#frmTemperaturaHumedad").get(0).reset()
+                    $("#frmTelefonoArchivo").get(0).reset()
                 })
             })
             .on("reset", function (event) {
