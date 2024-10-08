@@ -113,11 +113,17 @@
 
     <script>
         window.addEventListener("load", function (event) {
-            function buscar() {
+           function buscar() {
                 $.get("/buscar", function (respuesta) {
                     $("#tbodyTemperaturaHumedad").html("")
 
-                        $("#tbodyTelefonoArchivo").append(`<tr>
+                    var fechaAnterior = ""
+
+                    for (var x in respuesta) {
+                        var telefonoarchivo = respuesta[x]
+
+
+                        $("#tbodyTemperaturaHumedad").append(`<tr>
                             <td>${telefonoarchivo["Telefono"]}</td>
                             <td>${telefonoarchivo["Archivo"]}</td>
                             <td>
@@ -136,7 +142,7 @@
 
                 $.get("/editar", {id: id}, function (respuesta) {
                     console.log(respuesta)
-                    var temperaturaHumedad = respuesta[0]
+                    var telefonoarchivo = respuesta[0]
 
                     $("#id")
                     .val(telefonoarchivo["Id_Curso_Pago"])
