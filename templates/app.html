@@ -115,7 +115,7 @@
         window.addEventListener("load", function (event) {
            function buscar() {
                 $.get("/buscar", function (respuesta) {
-                    $("#tbodyTemperaturaHumedad").html("")
+                    $("#tbodyTelefonoArchivo").html("")
 
                     var fechaAnterior = ""
 
@@ -123,7 +123,7 @@
                         var telefonoarchivo = respuesta[x]
 
 
-                        $("#tbodyTemperaturaHumedad").append(`<tr>
+                        $("#tbodyTelefonoArchivo").append(`<tr>
                             <td>${telefonoarchivo["Telefono"]}</td>
                             <td>${telefonoarchivo["Archivo"]}</td>
                             <td>
