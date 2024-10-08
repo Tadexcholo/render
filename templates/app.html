@@ -33,6 +33,7 @@
       <table class="table table-sm">
         <thead>
           <tr>
+            <th>id</th>
             <th>Telefono</th>
             <th>Archivo</th>
             <th></th>
@@ -116,8 +117,6 @@
            function buscar() {
                 $.get("/buscar", function (respuesta) {
                     $("#tbodyTelefonoArchivo").html("")
-
-                    var fechaAnterior = ""
 
                     for (var x in respuesta) {
                         var telefonoarchivo = respuesta[x]
