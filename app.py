@@ -91,13 +91,13 @@ def guardar():
         Archivo     = %s
         WHERE Id_Curso_Pago = %s
         """
-        val = (telefono, archivo, id)
+        val = (id, telefono, archivo)
     else:
         sql = """
         INSERT INTO tst0_cursos_pagos (Telefono, Archivo)
-                        VALUES (%s,          %s)
+                               VALUES (%s,          %s)
         """
-        val =                  (Telefono, Archivo)
+        val =                  (telefono, archivo)
     
     cursor.execute(sql, val)
     con.commit()
