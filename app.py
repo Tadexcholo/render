@@ -78,30 +78,35 @@ def guardar():
     if not con.is_connected():
         con.reconnect()
 
-    id          = request.form["id"]
-    telefono = request.form["telefono"]
-    archivo     = request.form["archivo"]
+    id = request.form.get("id")
+    telefono = request.form.get("telefono")
+    archivo = request.form.get("archivo")
     
     cursor = con.cursor()
 
-    if id:
-        sql = """
-        UPDATE tst0_cursos_pagos SET
-        Telefono = %s,
-        Archivo     = %s
-        WHERE Id_Curso_Pago = %s
-        """
-        val = (id, telefono, archivo)
-    else:
-        sql = """
-        INSERT INTO tst0_cursos_pagos (Telefono, Archivo)
-                               VALUES (%s,          %s)
-        """
-        val =                  (telefono, archivo)
-    
-    cursor.execute(sql, val)
-    con.commit()
-    con.close()
+    try:
+        if id:
+            sql = """
+            UPDATE tst0_cursos_pagos SET
+            Telefono = %s,
+            Archivo = %s
+            WHERE Id_Curso_Pago = %s
+            """
+            val = (telefono, archivo, id)
+        else:
+            sql = """
+            INSERT INTO tst0_cursos_pagos (Telefono, Archivo)
+                                   VALUES (%s, %s)
+            """
+            val = (telefono, archivo)
+
+        cursor.execute(sql, val)
+        con.commit()
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        con.rollback()  # Revierte cambios en caso de error
+    finally:
+        con.close()
 
     notificarActualizacionTemperaturaHumedad()
 
