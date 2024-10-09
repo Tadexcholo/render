@@ -58,21 +58,26 @@ def notificarActualizacionTemperaturaHumedad():
 
 @app.route("/buscar")
 def buscar():
-    if not con.is_connected():
-        con.reconnect()
+    try:
+        if not con.is_connected():
+            con.reconnect()
 
-    cursor = con.cursor(dictionary=True)
-    cursor.execute("""
-    SELECT Id_Curso_Pago, Telefono, Archivo FROM tst0_cursos_pagos
-    ORDER BY Id_Curso_Pago DESC
-    LIMIT 10 OFFSET 0
-    """)
-    registros = cursor.fetchall()
-
-    con.close()
+        cursor = con.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT Id_Curso_Pago, Telefono, Archivo 
+            FROM tst0_cursos_pagos
+            ORDER BY Id_Curso_Pago DESC
+            LIMIT 10 OFFSET 0
+        """)
+        registros = cursor.fetchall()
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        registros = []
+    finally:
+        con.close()
 
     return make_response(jsonify(registros))
-
+    
 @app.route("/guardar", methods=["POST"])
 def guardar():
     if not con.is_connected():
