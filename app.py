@@ -1,50 +1,35 @@
-# python.exe -m venv .venv
-# cd .venv/Scripts
-# activate.bat
-# py -m ensurepip --upgrade
-
-from flask import Flask
-
-from flask import render_template
-from flask import request
-from flask import jsonify, make_response
-
+from flask import Flask, render_template, request, jsonify, make_response
 import pusher
-
 import mysql.connector
 import datetime
 import pytz
 
-con = mysql.connector.connect(
-    host="185.232.14.52",
-    database="u760464709_tst_sep",
-    user="u760464709_tst_sep_usr",
-    password="dJ0CIAFF="
-)
-
 app = Flask(__name__)
 
+# Configuración de la base de datos
+db_config = {
+    "host": "185.232.14.52",
+    "database": "u760464709_tst_sep",
+    "user": "u760464709_tst_sep_usr",
+    "password": "dJ0CIAFF="
+}
+
+# Ruta de inicio
 @app.route("/")
 def index():
-    con.close()
-
     return render_template("app.html")
 
 @app.route("/alumnos")
 def alumnos():
-    con.close()
-
     return render_template("alumnos.html")
 
 @app.route("/alumnos/guardar", methods=["POST"])
 def alumnosGuardar():
-    con.close()
-    matricula      = request.form["txtMatriculaFA"]
+    matricula = request.form["txtMatriculaFA"]
     nombreapellido = request.form["txtNombreApellidoFA"]
-
     return f"Matrícula {matricula} Nombre y Apellido {nombreapellido}"
 
-# Código usado en las prácticas
+# Código para notificar actualizaciones
 def notificarActualizacionTemperaturaHumedad():
     pusher_client = pusher.Pusher(
         app_id='1869080',
@@ -53,15 +38,12 @@ def notificarActualizacionTemperaturaHumedad():
         cluster='us2',
         ssl=True
     )
-
-    pusher_client.trigger("canalRegistrosTemperaturaHumedad", "registroTemperaturaHumedad", args)
+    pusher_client.trigger("canalRegistrosTemperaturaHumedad", "registroTemperaturaHumedad", {})
 
 @app.route("/buscar")
 def buscar():
     try:
-        if not con.is_connected():
-            con.reconnect()
-
+        con = mysql.connector.connect(**db_config)
         cursor = con.cursor(dictionary=True)
         cursor.execute("""
             SELECT Id_Curso_Pago, Telefono, Archivo 
@@ -70,26 +52,24 @@ def buscar():
             LIMIT 10 OFFSET 0
         """)
         registros = cursor.fetchall()
+        return make_response(jsonify(registros))
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        registros = []
+        return make_response(jsonify({"error": str(err)}), 500)
     finally:
-        con.close()
+        if con.is_connected():
+            cursor.close()
+            con.close()
 
-    return make_response(jsonify(registros))
-    
 @app.route("/guardar", methods=["POST"])
 def guardar():
-    if not con.is_connected():
-        con.reconnect()
-
-    id = request.form.get("id")
-    telefono = request.form.get("telefono")
-    archivo = request.form.get("archivo")
-    
-    cursor = con.cursor()
-
     try:
+        con = mysql.connector.connect(**db_config)
+        cursor = con.cursor()
+        id = request.form.get("id")
+        telefono = request.form.get("telefono")
+        archivo = request.form.get("archivo")
+        
         if id:
             sql = """
             UPDATE tst0_cursos_pagos SET
@@ -101,60 +81,65 @@ def guardar():
         else:
             sql = """
             INSERT INTO tst0_cursos_pagos (Telefono, Archivo)
-                                   VALUES (%s, %s)
+            VALUES (%s, %s)
             """
             val = (telefono, archivo)
 
         cursor.execute(sql, val)
         con.commit()
+        notificarActualizacionTemperaturaHumedad()
+        return make_response(jsonify({"success": True}), 200)
     except mysql.connector.Error as err:
         print(f"Error: {err}")
-        con.rollback()  # Revierte cambios en caso de error
+        con.rollback()
+        return make_response(jsonify({"error": str(err)}), 500)
     finally:
-        con.close()
-
-    notificarActualizacionTemperaturaHumedad()
-
-    return make_response(jsonify({}))
+        if con.is_connected():
+            cursor.close()
+            con.close()
 
 @app.route("/editar", methods=["GET"])
 def editar():
-    if not con.is_connected():
-        con.reconnect()
-
-    id = request.args["id"]
-
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    SELECT Id_Curso_Pago, Telefono, Archivo FROM tst0_cursos_pagos
-    WHERE Id_Curso_Pago = %s
-    """
-    val    = (id,)
-
-    cursor.execute(sql, val)
-    registros = cursor.fetchall()
-    con.close()
-
-    return make_response(jsonify(registros))
+    try:
+        con = mysql.connector.connect(**db_config)
+        cursor = con.cursor(dictionary=True)
+        id = request.args.get("id")
+        sql = """
+        SELECT Id_Curso_Pago, Telefono, Archivo FROM tst0_cursos_pagos
+        WHERE Id_Curso_Pago = %s
+        """
+        val = (id,)
+        cursor.execute(sql, val)
+        registros = cursor.fetchall()
+        return make_response(jsonify(registros))
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return make_response(jsonify({"error": str(err)}), 500)
+    finally:
+        if con.is_connected():
+            cursor.close()
+            con.close()
 
 @app.route("/eliminar", methods=["POST"])
 def eliminar():
-    if not con.is_connected():
-        con.reconnect()
-
-    id = request.form["id"]
-
-    cursor = con.cursor(dictionary=True)
-    sql    = """
-    DELETE FROM tst0_cursos_pagos
-    WHERE Id_Curso_Pago = %s
-    """
-    val    = (id,)
-
-    cursor.execute(sql, val)
-    con.commit()
-    con.close()
-
-    notificarActualizacionTemperaturaHumedad()
-
-    return make_response(jsonify({}))
+    try:
+        con = mysql.connector.connect(**db_config)
+        cursor = con.cursor()
+        id = request.form["id"]
+        sql = """
+        DELETE FROM tst0_cursos_pagos
+        WHERE Id_Curso_Pago = %s
+        """
+        val = (id,)
+        cursor.execute(sql, val)
+        con.commit()
+        notificarActualizacionTemperaturaHumedad()
+        return make_response(jsonify({"success": True}), 200)
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        con.rollback()
+        return make_response(jsonify({"error": str(err)}), 500)
+    finally:
+        if con.is_connected():
+            cursor.close()
+            con.close()
